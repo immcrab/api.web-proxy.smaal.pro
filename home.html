@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmaalWeb Home</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #clock {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        h1 span {
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 25px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .shortcuts {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .tile {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #ccc;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .tile:hover {
+            background: #252525;
+            border-color: #444;
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        .tile i {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="clock">00:00</div>
+        <h1>Welcome to <span>SmaalWeb</span></h1>
+
+        <div class="search-box">
+            <input type="text" id="innerSearch" placeholder="Search the web or enter address..." autofocus>
+        </div>
+
+        <div class="shortcuts">
+            <a href="#" class="tile" onclick="parent.quickLoad('https://google.com')">Google</a>
+            <a href="#" class="tile" onclick="parent.quickLoad('https://youtube.com')">YouTube</a>
+            <a href="#" class="tile" onclick="parent.quickLoad('https://discord.com')">Discord</a>
+            <a href="#" class="tile" onclick="parent.quickLoad('https://github.com')">GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // Real-time Clock
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').textContent = time;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Listen for Enter key in the search box
+        document.getElementById('innerSearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const val = e.target.value;
+                if (val) {
+                    // This calls the "handleSurf" logic in your main page
+                    window.parent.postMessage({ type: 'surf', url: val }, '*');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
